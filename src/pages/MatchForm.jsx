@@ -43,16 +43,24 @@ export default function MatchForm() {
 
       const res = await axios.post(
   `${import.meta.env.VITE_API_URL}/predict`,
-  payload
+  payload,
+  { timeout: 20000 }
 );
+
 
 
 setResult(res.data.win_probability.win_probability);
 
     } catch (err) {
-      console.error("Frontend error:", err);
-      alert("Prediction failed. Backend error.");
-    } finally {
+  console.error("Axios error:", err);
+
+  if (err.response) {
+    alert(`Backend error: ${err.response.status}`);
+  } else {
+    alert("Backend is waking up, please try again in 5 seconds");
+  }
+}
+finally {
       setLoading(false);
     }
   };
