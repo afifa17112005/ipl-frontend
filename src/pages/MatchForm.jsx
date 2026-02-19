@@ -26,9 +26,10 @@ export default function MatchForm() {
 
   useEffect(() => {
     // Debug: Log the API URL being used
-    console.log("Fetching metadata from:", `${import.meta.env.VITE_API_URL}/metadata`);
+    const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, "");
+    console.log("Fetching metadata from:", `${baseUrl}/metadata`);
 
-    axios.get(`${import.meta.env.VITE_API_URL}/metadata`)
+    axios.get(`${baseUrl}/metadata`)
       .then(res => {
         setMetadata(res.data);
         setError(null);
@@ -78,7 +79,8 @@ export default function MatchForm() {
         bowler: bowler
       };
 
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/predict`, payload);
+      const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, "");
+      const res = await axios.post(`${baseUrl}/predict`, payload);
       setResult(res.data.win_probability);
 
       // 2. Start Animation Sequence
