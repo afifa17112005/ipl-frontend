@@ -22,10 +22,21 @@ export default function MatchForm() {
   // Animation State: 'idle', 'calc', 'action', 'reveal'
   const [animPhase, setAnimPhase] = useState("idle");
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
+    // Debug: Log the API URL being used
+    console.log("Fetching metadata from:", `${import.meta.env.VITE_API_URL}/metadata`);
+
     axios.get(`${import.meta.env.VITE_API_URL}/metadata`)
-      .then(res => setMetadata(res.data))
-      .catch(err => console.error(err));
+      .then(res => {
+        setMetadata(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        console.error(err);
+        setError(`Failed to load data: ${err.message}. API URL: ${import.meta.env.VITE_API_URL}`);
+      });
   }, []);
 
   const isValid = () => target !== "" && score !== "" && overs !== "" && wickets !== "" && striker !== "" && bowler !== "";
@@ -104,6 +115,7 @@ export default function MatchForm() {
           <div className="hud-header">
             <h2>MATCH INTELLIGENCE</h2>
             <div className="hud-line"></div>
+            {error && <div style={{ color: 'red', textAlign: 'center', marginTop: '10px' }}>{error}</div>}
           </div>
 
           <div className="hud-content">
