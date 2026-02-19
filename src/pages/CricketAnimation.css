@@ -1,0 +1,337 @@
+/* =========================================
+   CARTOON CRICKET ANIMATIONS - REFINED
+========================================= */
+
+/* --- STAGE OVERLAY --- */
+.animation-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* --- PHASE 1: CALCULATION TABLE --- */
+.calc-table {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    font-family: 'Roboto Mono', monospace;
+    /* Digital look */
+    border: 2px solid #333;
+    color: #00e676;
+    /* Hacker Green for data */
+}
+
+.calc-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.calc-row:nth-child(1) {
+    animation: slideIn 0.5s forwards 0.2s;
+}
+
+.calc-row:nth-child(2) {
+    animation: slideIn 0.5s forwards 0.8s;
+}
+
+.calc-row:nth-child(3) {
+    animation: slideIn 0.5s forwards 1.4s;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1s infinite;
+}
+
+@keyframes dots {
+    0% {
+        content: '.';
+    }
+
+    33% {
+        content: '..';
+    }
+
+    66% {
+        content: '...';
+    }
+}
+
+/* --- PHASE 2: BAT & BALL --- */
+.batting-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.cartoon-bat {
+    position: absolute;
+    bottom: 20%;
+    right: 30%;
+    width: 20px;
+    height: 160px;
+    background: #ffd54f;
+    /* Wood/Gold color */
+    border: 2px solid #5d4037;
+    border-radius: 4px;
+    transform-origin: bottom center;
+    transform: rotate(45deg);
+    animation: swingBat 0.4s ease-in forwards 0.5s;
+    /* Wait for ball */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.cartoon-bat::after {
+    content: '';
+    /* Handle */
+    position: absolute;
+    bottom: -45px;
+    left: 2px;
+    width: 12px;
+    height: 45px;
+    background: #3e2723;
+    border-radius: 4px;
+}
+
+.cartoon-ball {
+    position: absolute;
+    top: 40%;
+    left: -50px;
+    width: 45px;
+    height: 45px;
+    background: #d32f2f;
+    border: 2px solid #b71c1c;
+    border-radius: 50%;
+    animation: ballPitch 0.8s linear forwards;
+    box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.cartoon-ball::before {
+    content: '';
+    /* Seam */
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%) rotate(-15deg);
+    border: 1px dashed rgba(0, 0, 0, 0.2);
+}
+
+.impact-pow {
+    position: absolute;
+    top: 45%;
+    left: 55%;
+    font-family: 'Oswald', sans-serif;
+    font-size: 100px;
+    font-weight: 900;
+    font-style: italic;
+    color: #ffeb3b;
+    text-shadow: 4px 4px 0 #d32f2f, 8px 8px 0 black;
+    transform: scale(0);
+    animation: pow 0.5s ease-out forwards 0.7s;
+    /* Sync with hit */
+    z-index: 10;
+}
+
+@keyframes swingBat {
+    0% {
+        transform: rotate(45deg);
+    }
+
+    50% {
+        transform: rotate(-60deg);
+    }
+
+    /* Backswing */
+    100% {
+        transform: rotate(90deg);
+    }
+
+    /* Hit */
+}
+
+@keyframes ballPitch {
+    0% {
+        left: -50px;
+        top: 40%;
+        transform: rotate(0deg);
+    }
+
+    70% {
+        left: 55%;
+        top: 45%;
+        transform: rotate(360deg);
+    }
+
+    /* Move to bat */
+    100% {
+        left: 120%;
+        top: -20%;
+        transform: rotate(720deg);
+    }
+
+    /* Fly away */
+}
+
+@keyframes pow {
+    0% {
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.5) rotate(10deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+/* --- PHASE 3: REVEAL (BALL BREAK) --- */
+.reveal-stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+}
+
+.giant-ball {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: #d32f2f;
+    /* Red */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    animation: ballExpand 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.giant-ball-content {
+    opacity: 0;
+    transform: scale(0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: contentShow 0.8s ease forwards 0.8s;
+    font-family: 'Roboto', sans-serif;
+    color: #222;
+}
+
+.giant-ball-content h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 32px;
+    color: #d32f2f;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes ballExpand {
+    0% {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    50% {
+        width: 80vw;
+        height: 80vh;
+        border-radius: 50%;
+        background: #d32f2f;
+    }
+
+    100% {
+        width: 90vw;
+        height: 90vh;
+        border-radius: 16px;
+        background: white;
+        border: 8px solid #d32f2f;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@keyframes contentShow {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- CUTE HUMANS --- */
+.cute-human {
+    font-size: 60px;
+    animation: bounce 0.6s infinite alternate;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-15px);
+    }
+}
+
+/* BAR CHART FOR CARTOON MODE */
+.toon-bar-container {
+    width: 70%;
+    margin: 30px 0;
+}
+
+.toon-bar {
+    height: 50px;
+    background: #f5f5f5;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.toon-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-weight: 700;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    color: white;
+    width: 0%;
+    transition: width 1s ease-out;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
